@@ -118,6 +118,14 @@
             module.hot.accept();
         }
 
-
 #### loaders
+    1.处理css
+        style-loader
+        css-loader
+        use: ['style-loader', 'css-loader'] // 先使用css-loader加载，在使用style-loader插入<style></style>中
+        分离css
+        extract-text-webpack-plugin
+    2.处理图片
+        url-loader
+        file-loader
 
