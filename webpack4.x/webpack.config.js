@@ -2,7 +2,9 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const cleanWebpackPlugin = require('clean-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const PurifyCssWebpack = require('purifycss-webpack');
+const glob = require('glob');
 
 module.exports = {
     // 调试
@@ -27,16 +29,18 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: {
+                use: [
+                    'css-hot-loader',
+                    MiniCssExtractPlugin.loader,
+                    {
                         loader: 'css-loader',
                         options: {
                             module: true, //开启css模块化
-                            localIdentName: '[path]-[name]-[local]-[hash:base64:6]'
+                            localIdentName: 'purify_[path]-[name]-[local]-[hash:base64:6]'
                         }
-                    }
-                }),
+                    },
+                    'postcss-loader'
+                ],
                 exclude: [
                     path.resolve(__dirname, 'node_modules'),
                     path.resolve(__dirname, 'src/common')
@@ -44,14 +48,36 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: 'css-loader'
-                }),
+                use: [
+                    'css-hot-loader',
+                    MiniCssExtractPlugin.loader,
+                    'css-loader', 
+                    'postcss-loader'
+                ],
                 include: [
                     path.resolve(__dirname, 'node_modules'),
                     path.resolve(__dirname, 'src/common')
                 ]
+            },
+            {
+                test: /\.(scss|sass)$/,
+                use: [
+                    'css-hot-loader',
+                    MiniCssExtractPlugin.loader,
+                    'css-loader', 
+                    'sass-loader',
+                    'postcss-loader'
+                ],
+            },
+            {
+                test: /\.less$/,
+                use: [
+                    'css-hot-loader',
+                    MiniCssExtractPlugin.loader,
+                    'css-loader', 
+                    'less-loader',
+                    'postcss-loader'
+                ],
             },
             {
                 test: /\.(png|jpg|gif|jpeg)$/,
@@ -75,14 +101,6 @@ module.exports = {
                         }
                     }
                 ]
-            },
-            {
-                test: /\.scss$/,
-                use: ['style-loader', 'css-loader', 'sass-loader']
-            },
-            {
-                test: /\.less$/,
-                use: ['style-loader', 'css-loader', 'less-loader']
             }
         ]
     },
@@ -102,7 +120,16 @@ module.exports = {
         new cleanWebpackPlugin(['dist/assets']),
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
-        new ExtractTextPlugin('assets/css/index.css')
+        new MiniCssExtractPlugin({
+            filename: 'assets/css/[name].css',
+            chunkFilename: 'assets/css/[id].css'
+        }),
+        /* new PurifyCssWebpack({
+            paths: glob.sync(path.join(__dirname, 'src/*.html')),
+            purifyOptions: {
+                whitelist: ['*purify*']
+            }
+        }) */
     ],
     // 开发服务器
     devServer: {
