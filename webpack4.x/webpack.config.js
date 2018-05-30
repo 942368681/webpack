@@ -5,10 +5,12 @@ const cleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const PurifyCssWebpack = require('purifycss-webpack');
 const glob = require('glob');
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 module.exports = {
     // 调试
-    devtool: 'cheap-module-source-map',
+    devtool: 'cheap-module-eval-source-map',
     // 入口配置
     entry: './src/app.js',
     // 出口
@@ -104,6 +106,22 @@ module.exports = {
             }
         ]
     },
+    // 生产环境下的配置优化
+    optimization: {
+        minimizer: [
+            new UglifyJsPlugin({
+                cache: true,
+                parallel: true,
+                sourceMap: true 
+            }),
+            new OptimizeCSSAssetsPlugin({
+                assetNameRegExp: /\.css$/g,
+                cssProcessor: require('cssnano'),
+                cssProcessorOptions: {discardComments:{removeAll: true}},
+                canPrint: true
+            })
+        ]
+    },
     // 插件
     plugins: [
         new HtmlWebpackPlugin({
@@ -124,12 +142,13 @@ module.exports = {
             filename: 'assets/css/[name].css',
             chunkFilename: 'assets/css/[id].css'
         }),
+        // 和 mini-css-extract-plugin 冲突
         /* new PurifyCssWebpack({
             paths: glob.sync(path.join(__dirname, 'src/*.html')),
             purifyOptions: {
                 whitelist: ['*purify*']
             }
-        }) */
+        }) */ 
     ],
     // 开发服务器
     devServer: {
