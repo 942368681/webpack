@@ -27,7 +27,7 @@ class Greeter extends Component {
         return (
             <div>
                 <div className = "o">React</div>
-                <div id = { appStyle.title }>hello world</div>
+                <div id = { appStyle.title } className = "title">hello world</div>
                 <img src = { kobePic } />
                 <img src = { rosePic } />
                 <div className = "iconfont icon-login"></div>

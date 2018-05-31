@@ -3,27 +3,29 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const cleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const PurifyCssWebpack = require('purifycss-webpack');
 const glob = require('glob');
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     // 调试
     devtool: 'cheap-module-eval-source-map',
     // 入口配置
-    entry: './src/app.js',
+    entry: {
+        index: './src/app.js',
+    },
     // 出口
     output: {
         path: path.resolve(__dirname, 'dist/'),
-        filename: 'assets/js/bundle.js',
+        filename: 'assets/js/[name].bundle.js',
         publicPath: './'
     },
     // module(里面配rules -> loaders)
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.(js|jsx)$/,
                 use: ['babel-loader'],
                 exclude: [
                     path.resolve(__dirname, 'node_modules')
@@ -106,21 +108,70 @@ module.exports = {
             }
         ]
     },
-    // 生产环境下的配置优化
+    // 配置优化
     optimization: {
+        // development默认关闭，production时开启
         minimizer: [
             new UglifyJsPlugin({
+                exclude: /\.min\.js$/,
                 cache: true,
                 parallel: true,
-                sourceMap: true 
+                sourceMap: false,
+                extractComments: false,
+                uglifyOptions: {
+                    compress: {
+                        unused: true,
+                        warnings: false,
+                        drop_debugger: true
+                    },
+                    output: {
+                        comments: false
+                    }
+                } 
             }),
             new OptimizeCSSAssetsPlugin({
                 assetNameRegExp: /\.css$/g,
                 cssProcessor: require('cssnano'),
-                cssProcessorOptions: {discardComments:{removeAll: true}},
+                cssProcessorOptions: {
+                    safe: true,
+                    mergeLonghand: false,
+                    discardComments: {removeAll: true},
+                    autoprefixer: { disable: true },
+                },
                 canPrint: true
             })
-        ]
+        ],
+        // 拆分js
+        splitChunks: {
+            chunks: "async",
+            minSize: 30000,
+            minChunks: 1,
+            maxAsyncRequests: 5,
+            maxInitialRequests: 3,
+            automaticNameDelimiter: '~',
+            name: true,
+            cacheGroups: {
+                // 提取 node_modules 中代码
+                vendors: {
+                    test: /[\\/]node_modules[\\/]/,
+                    priority: -10,
+                    name: "vendors",
+                    chunks: "all"
+                },
+                // 将最少重复引用两次的模块放入default中
+                default: {
+                    minChunks: 2,
+                    priority: -20,
+                    reuseExistingChunk: true,
+                },
+                styles: {
+                    name: 'styles',
+                    test: /\.s?[ac]ss$/,
+                    chunks: 'all',
+                    enforce: true
+                }
+            }
+        }
     },
     // 插件
     plugins: [
@@ -135,20 +186,23 @@ module.exports = {
             },
             filename: 'index.html' // 文件名
         }),
-        new cleanWebpackPlugin(['dist/assets']),
+        new cleanWebpackPlugin(['dist/assets', 'dist/static']),
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new MiniCssExtractPlugin({
             filename: 'assets/css/[name].css',
             chunkFilename: 'assets/css/[id].css'
         }),
-        // 和 mini-css-extract-plugin 冲突
-        /* new PurifyCssWebpack({
-            paths: glob.sync(path.join(__dirname, 'src/*.html')),
-            purifyOptions: {
-                whitelist: ['*purify*']
+        new CopyWebpackPlugin([
+            {
+                from: path.resolve(__dirname, 'src/static'),
+                to: './static'
             }
-        }) */ 
+        ]),
+        // 引入第三方库
+        new webpack.ProvidePlugin({
+            // $: 'jquery'
+        })
     ],
     // 开发服务器
     devServer: {
