@@ -41,6 +41,8 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
+console.log(<Greeter><div>这是Greeter组件</div></Greeter>);
+
 if (module.hot) {
     module.hot.accept();
 }
