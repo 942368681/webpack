@@ -11,8 +11,8 @@ module.exports = merge(baseConfig, {
     // 出口
     output: {
         path: path.resolve(__dirname, 'dist/'),
-        filename: 'assets/js/[name].bundle.min.js',
-        chunkFilename: 'assets/js/[name].bundle.min.js',
+        filename: 'assets/js/[name].min.bundle.js',
+        chunkFilename: 'assets/js/[name].min.bundle.js',
         publicPath: './'
     },
     // 配置优化
@@ -23,7 +23,7 @@ module.exports = merge(baseConfig, {
                 exclude: /\.min\.js$/,
                 cache: true,
                 parallel: true, // 开启并行压缩，充分利用cpu
-                sourceMap: false,
+                sourceMap: true,
                 extractComments: false, // 移除注释
                 uglifyOptions: {
                     compress: {
