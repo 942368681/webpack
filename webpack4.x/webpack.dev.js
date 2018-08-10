@@ -35,6 +35,7 @@ module.exports = merge(baseConfig, {
         open: true,
         // 热更新
         hot: true,
+        // 确保 publicPath 总是以斜杠(/)开头和结尾
         publicPath: '/'
     },
     mode: 'development'

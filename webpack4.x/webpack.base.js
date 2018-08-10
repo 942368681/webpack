@@ -8,7 +8,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     // 入口配置
     entry: {
-        index: './src/app.js',
+        index: './src/index.js',
     },
     // module(里面配rules -> loaders)
     module: {
@@ -29,7 +29,7 @@ module.exports = {
                         loader: 'css-loader',
                         options: {
                             module: true, //开启css模块化
-                            localIdentName: 'purify_[path]-[name]-[local]-[hash:base64:6]'
+                            localIdentName: '[path]-[name]-[local]-[hash:base64:6]'
                         }
                     },
                     'postcss-loader'
@@ -114,7 +114,7 @@ module.exports = {
         ]),
         // 引入第三方库
         new webpack.ProvidePlugin({
-            // $: 'jquery'
+            Immutable: 'immutable'
         })
     ]
 };
