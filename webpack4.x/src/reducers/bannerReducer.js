@@ -1,6 +1,6 @@
 
 const initialState = {
-    bannerText: "img_01"
+    bannerText: 1
 };
 
 const bannerReducer = (state = initialState, action) => {

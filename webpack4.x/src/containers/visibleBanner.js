@@ -4,11 +4,10 @@ import Banner from '../components/banner';
 
 const mapStateToProps = state => ({
     bannerText: state.bannerReducer.bannerText
-})
-const mapDispatchToProps = dispatch => ({
+});
+const mapDispatchToProps = (dispatch) => ({
     changeText: newText => dispatch(changeText(newText))
 });
-
 export default connect(
     mapStateToProps,
     mapDispatchToProps
