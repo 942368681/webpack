@@ -3,21 +3,30 @@ import { connect } from 'react-redux';
 import actions from '../../redux/actions';
 import oStyle from './index.css';
 import ajaxRequest from 'Utilities/ajax';
-import { Button } from 'antd';
+import { Button, Tree, Icon } from 'antd';
+
+const { TreeNode } = Tree;
 
 @connect(
     state => ({
-        data: state.workListReducer.a
+        data: state.workListReducer.a,
+        treeData: state.workListReducer.treeData
     }),
     dispatch => ({
         change: num => dispatch(actions.changeNum(num))
     })
 )
 class HomeworkList extends React.PureComponent {
-    state = {};
+    state = {
+        expandedKeys: [],
+        autoExpandParent: true,
+        checkedKeys: [],
+        selectedKeys: []
+    };
 
     componentDidMount() {
         console.log(this.props.data);
+        console.log(this.props.treeData);
         this.testGetData();
     };
     
@@ -65,12 +74,56 @@ class HomeworkList extends React.PureComponent {
         change(99);
     };
 
+    onExpand = (expandedKeys) => {
+        console.log('onExpand', expandedKeys);
+        this.setState({
+          expandedKeys,
+          autoExpandParent: false
+        });
+    }
+    
+    onCheck = (checkedKeys) => {
+        console.log('onCheck', checkedKeys);
+        this.setState({ checkedKeys });
+    }
+    
+    onSelect = (selectedKeys, info) => {
+        console.log('onSelect', info);
+        this.setState({ selectedKeys });
+    }
+    
+    renderTreeNodes = data => data.map((item) => {
+        if (item.children) {
+            return (
+                <TreeNode title={item.title} key={item.key} dataRef={item} icon={<Icon type="smile-o" />}>
+                    {this.renderTreeNodes(item.children)}
+                </TreeNode>
+            );
+        }
+        return <TreeNode {...item} icon={<Icon type="smile-o" />} />;
+    });
+
     render () {
         console.log(this.props.data)
         return (
             <div>
                 <div className={oStyle.title}>作业列表</div>
                 <Button type="primary" onClick={this.change}>click</Button>
+                <Tree
+                    checkable
+                    showIcon
+                    onExpand={this.onExpand}
+                    expandedKeys={this.state.expandedKeys}
+                    autoExpandParent={this.state.autoExpandParent}
+                    onCheck={this.onCheck}
+                    checkedKeys={this.state.checkedKeys}
+                    onSelect={this.onSelect}
+                    selectedKeys={this.state.selectedKeys}
+                    showLine={true}
+                    switcherIcon={<Icon type="down" />}
+                >
+                    {this.renderTreeNodes(this.props.treeData)}
+                </Tree>
             </div>
         );
     };
