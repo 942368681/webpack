@@ -114,7 +114,8 @@ module.exports = {
         ]),
         // 引入第三方库
         new webpack.ProvidePlugin({
-            Immutable: 'immutable'
+            Immutable: 'immutable',
+            fetchJsonp: 'fetch-jsonp'
         })
     ]
 };

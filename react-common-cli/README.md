@@ -8,6 +8,7 @@
 - devServer
 - 基本插件和loader
 - css前缀
+- css模块化
 - 抽离代码块
 
 #### 下载

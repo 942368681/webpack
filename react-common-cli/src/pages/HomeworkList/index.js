@@ -1,17 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import actions from '../../redux/actions';
 import oStyle from './index.css';
 import ajaxRequest from 'Utilities/ajax';
+import { Button } from 'antd';
 
 @connect(
     state => ({
         data: state.workListReducer.a
     }),
     dispatch => ({
-      
+        change: num => dispatch(actions.changeNum(num))
     })
 )
 class HomeworkList extends React.PureComponent {
+    state = {};
+
     componentDidMount() {
         console.log(this.props.data);
         this.testGetData();
@@ -56,10 +60,17 @@ class HomeworkList extends React.PureComponent {
         });
     };
 
+    change = () => {
+        const {change} = this.props;
+        change(99);
+    };
+
     render () {
+        console.log(this.props.data)
         return (
             <div>
                 <div className={oStyle.title}>作业列表</div>
+                <Button type="primary" onClick={this.change}>click</Button>
             </div>
         );
     };

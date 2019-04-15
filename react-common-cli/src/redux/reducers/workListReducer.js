@@ -4,10 +4,10 @@ const initialState = {
 
 const workListReducer = (state = initialState, action) => {
     switch (action.type) {
-        case '':
+        case 'CHANGE_NUM':
             return {
                 ...state,
-                ...action.obj
+                "a": action.num
             }
         default:
             return state;

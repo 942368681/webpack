@@ -4,6 +4,7 @@
     "description": "",
     "main": "webpack.config.js",
     "dependencies": {
+        "fetch-jsonp": "^1.1.3",
         "immutable": "^3.8.2",
         "react": "^16.4.2",
         "react-dom": "^16.4.2",
