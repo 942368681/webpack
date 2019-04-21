@@ -1,0 +1,4 @@
+#root {
+    transition: all .5s;
+    transform: rotate(45deg);
+}
