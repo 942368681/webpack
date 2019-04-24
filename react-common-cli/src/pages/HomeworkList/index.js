@@ -4,6 +4,7 @@ import actions from '../../redux/actions';
 import oStyle from './index.css';
 import ajaxRequest from 'Utilities/ajax';
 import { Button, Tree, Icon } from 'antd';
+import logo from '../../common/img/logo.png';
 
 const { TreeNode } = Tree;
 
@@ -107,6 +108,7 @@ class HomeworkList extends React.PureComponent {
         console.log(this.props.data)
         return (
             <div>
+                <img src={logo}/>
                 <div className={oStyle.title}>作业列表</div>
                 <Button type="primary" onClick={this.change}>click</Button>
                 <Tree

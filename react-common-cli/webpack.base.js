@@ -9,7 +9,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'dist/'),
         filename: '[name].bundle.[hash:8].js',
-        publicPath: './'
+        publicPath: '/'
     },
     resolve: {
         modules: ['node_modules'],
@@ -65,7 +65,7 @@ module.exports = {
                     {
                         loader: 'url-loader',
                         options: {
-                            limit: 200*1024,
+                            limit: 2*1024,
                             name: '[name]_[hash:6].[ext]',
                             outputPath: 'img/'
                         }
