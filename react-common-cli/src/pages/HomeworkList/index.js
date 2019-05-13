@@ -26,6 +26,7 @@ class HomeworkList extends React.PureComponent {
     };
 
     componentDidMount() {
+        console.log(1);
         console.log(this.props.data);
         console.log(this.props.treeData);
         this.testGetData();
