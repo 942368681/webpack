@@ -13,12 +13,12 @@ import actions from '../../redux/actions';
 )
 class QuestionList extends React.PureComponent {
     changeNum = () => {
-        console.log(this.props.num);
+        console.log(this.props.num);  // 1
         this.props.change(99);
-        console.log(this.props.num);
-        // setTimeout(() => {
-        //     console.log(this.props.num);
-        // }, 0);
+        console.log(this.props.num);  // 1
+        setTimeout(() => {
+            console.log(this.props.num); // 99
+        }, 0);
     };
     render () {
         const { num } = this.props;
