@@ -13,7 +13,7 @@ module.exports = {
         publicPath: './'
     },
     resolve: {
-        modules: [path.resolve( __dirname, 'node modules')],
+        modules: [path.resolve( __dirname, 'node_modules')],
         extensions: ['.vue', '.js', '.json'],
         alias: {
             Utilities: path.resolve(__dirname, 'src/common/utils')
