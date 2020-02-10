@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import { board } from 'white-board-pro2';
-console.log(board);
+import { WhiteBoard } from 'white-board-pro2';
+console.log(WhiteBoard);
 
 export default {
     name: 'page-1',
@@ -21,7 +21,7 @@ export default {
     },
     mounted () {
         console.log('page1 mounted');
-        this.board = board({
+        this.board = WhiteBoard({
             "el": this.$refs.boardCon,
             "maxPage": 5,
             // "pageHeight": 100,
