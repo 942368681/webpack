@@ -19,5 +19,14 @@ export const routes = [
         meta:{
             keepAlive: true
         }
+    },
+    {
+        path: '/page3',
+        name: 'page3',
+        component: () => import('../components/page3.vue'),
+        // component: Page3,
+        meta:{
+            keepAlive: true
+        }
     }
 ]

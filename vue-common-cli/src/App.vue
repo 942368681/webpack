@@ -22,6 +22,6 @@
 
 <style>
     #app {
-        background: #039be5;
+        /* background: #039be5; */
     }
 </style>
