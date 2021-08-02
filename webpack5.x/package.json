@@ -1,0 +1,20 @@
+{
+  "name": "webpack5.x",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "cross-env NODE_ENV=prod MODE=prod webpack --config ./scripts/webpack.config.js",
+    "build:dev": "cross-env NODE_ENV=dev MODE=prod webpack",
+    "build:test": "cross-env NODE_ENV=test MODE=prod webpack",
+    "start": "cross-env NODE_ENV=dev MODE=dev webpack-dev-server",
+    "start:test": "cross-env NODE_ENV=test MODE=dev webpack-dev-server",
+    "start:prod": "cross-env NODE_ENV=prod MODE=dev webpack-dev-server"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "webpack": "^5.47.1",
+    "webpack-cli": "^4.7.2",
+    "webpack-merge": "^5.8.0"
+  }
+}
