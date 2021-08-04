@@ -1,0 +1,1 @@
+export const appendZero = (n: number) => n >= 10 ? ('' + n) : ('0' + n);
